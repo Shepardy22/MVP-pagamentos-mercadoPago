@@ -25,7 +25,7 @@ MVP-pagamentos-mercadoPago/
   src/          # Frontend React/Vite
   .gitignore
   README.md
-  vercel.json
+   # vercel.json (não é mais necessário)
 ```
 
 ## ⚙️ Instalação e Deploy
@@ -42,7 +42,7 @@ MVP-pagamentos-mercadoPago/
 3. **Deploy na Vercel:**
    - O frontend (src/) será detectado automaticamente.
    - O backend (backend/api/) será usado como API Functions.
-   - O arquivo `vercel.json` garante o roteamento correto.
+   - Não é necessário arquivo `vercel.json`. O roteamento é automático.
 
 ## 📝 Como Funciona
 - O frontend faz requisições para `/api/payments`.

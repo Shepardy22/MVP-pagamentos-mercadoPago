@@ -1,6 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/api/payments/:id", "destination": "/backend/api/payments/:id" },
-    { "source": "/api/payments", "destination": "/backend/api/payments" }
-  ]
-}
