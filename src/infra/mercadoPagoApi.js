@@ -5,18 +5,14 @@ const api = axios.create({
   baseURL: isDev ? '/mp-api' : '/api/payments',
 });
 
-
-
-  // Exemplo: buscar pagamentos pendentes (ajuste conforme backend)
-  // O backend pode precisar de um endpoint específico para listar pendentes
-  // Aqui, apenas um placeholder:
+export async function buscarPagamentosPendentes() {
   // O backend não implementa busca de pendentes, então retorna vazio
   return [];
 }
 
+export async function cancelarPagamento(id) {
   const resposta = await api.put(`/${id}`);
   return resposta.data;
 }
 
 export default api;
-  return resposta.data;
