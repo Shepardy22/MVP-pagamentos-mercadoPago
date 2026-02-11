@@ -4,7 +4,7 @@
 
 ---
 
-![APP View](src/assets/view.png)
+<img src="src/assets/view.png" alt="APP View" width="250" />
 
 ## 🚀 Principais Funcionalidades
 
