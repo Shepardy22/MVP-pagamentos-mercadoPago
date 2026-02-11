@@ -21,12 +21,14 @@ export default class PixPayment extends PaymentMethod {
         },
       },
     };
-    const resposta = await api.post('v1/payments', dados);
+    // Em produção, o backend expõe apenas /api/payments
+    // O axios já está configurado com baseURL correta
+    const resposta = await api.post('/', dados);
     return resposta.data;
   }
 
   async consultarStatus(idPagamento) {
-    const resposta = await api.get(`v1/payments/${idPagamento}`);
+    const resposta = await api.get(`/${idPagamento}`);
     return resposta.data.status;
   }
 }
