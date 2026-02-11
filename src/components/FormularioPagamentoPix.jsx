@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import PagadorValidator from '../domain/validators/PagadorValidator';
 
-function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar }) {
+function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar, metodoSelecionado }) {
+  const valorMinimo = metodoSelecionado === 'Boleto Bancário' ? 3.0 : 1.0;
   const [erros, setErros] = useState({});
+  const [erroValorMinimo, setErroValorMinimo] = useState('');
 
   function aplicarMascaraCPF(valor) {
     const limpo = valor.replace(/\D/g, '');
@@ -29,6 +31,17 @@ function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar }) {
     const dadosParaValidar = { ...dados, cpf: dados.cpf.replace(/\D/g, '') };
     const errosValidados = PagadorValidator.validate(dadosParaValidar);
     setErros(errosValidados);
+    const valor = parseFloat(dados.valor);
+    if (!isNaN(valor) && valor < valorMinimo) {
+      setErroValorMinimo(
+        metodoSelecionado === 'Boleto Bancário'
+          ? 'O valor mínimo para boleto é R$ 3,00.'
+          : 'O valor mínimo para PIX é R$ 1,00.'
+      );
+      return;
+    } else {
+      setErroValorMinimo('');
+    }
     if (!Object.values(errosValidados).some(Boolean)) aoEnviar(e);
   }
 
@@ -54,18 +67,104 @@ function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar }) {
         {erros.email && <span className="error-msg">{erros.email}</span>}
       </label>
 
+
       <label style={{ gridColumn: 'span 2' }}>
-        Nome Completo:
+        Nome:
         <input
           type="text"
           name="nome"
           value={dados.nome}
           onChange={aoAlterar}
           required
-          placeholder="Como no cartão ou documento"
+          placeholder="Primeiro nome"
         />
         {erros.nome && <span className="error-msg">{erros.nome}</span>}
       </label>
+
+      {metodoSelecionado === 'Boleto Bancário' && (
+        <>
+          <label style={{ gridColumn: 'span 2' }}>
+            Sobrenome:
+            <input
+              type="text"
+              name="sobrenome"
+              value={dados.sobrenome || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="Sobrenome do pagador"
+            />
+            {erros.sobrenome && <span className="error-msg">{erros.sobrenome}</span>}
+          </label>
+          <label style={{ gridColumn: 'span 2' }}>
+            CEP:
+            <input
+              type="text"
+              name="cep"
+              value={dados.cep || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="00000-000"
+              maxLength={9}
+            />
+          </label>
+          <label style={{ gridColumn: 'span 2' }}>
+            Rua:
+            <input
+              type="text"
+              name="rua"
+              value={dados.rua || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="Nome da rua"
+            />
+          </label>
+          <label>
+            Número:
+            <input
+              type="text"
+              name="numero"
+              value={dados.numero || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="Número"
+            />
+          </label>
+          <label>
+            Bairro:
+            <input
+              type="text"
+              name="bairro"
+              value={dados.bairro || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="Bairro"
+            />
+          </label>
+          <label>
+            Cidade:
+            <input
+              type="text"
+              name="cidade"
+              value={dados.cidade || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="Cidade"
+            />
+          </label>
+          <label>
+            UF:
+            <input
+              type="text"
+              name="uf"
+              value={dados.uf || ''}
+              onChange={aoAlterar}
+              required
+              placeholder="UF"
+              maxLength={2}
+            />
+          </label>
+        </>
+      )}
 
       <label>
         CPF:
@@ -81,18 +180,23 @@ function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar }) {
         {erros.cpf && <span className="error-msg">{erros.cpf}</span>}
       </label>
 
+
       <label>
         Valor (R$):
         <input
           type="number"
           name="valor"
           step="0.01"
-          min="0.01"
+          min={valorMinimo}
           value={dados.valor}
           onChange={aoAlterar}
           required
         />
         {erros.valor && <span className="error-msg">{erros.valor}</span>}
+        {erroValorMinimo && <span className="error-msg">{erroValorMinimo}</span>}
+        <span style={{ display: 'block', marginTop: 6, color: '#888', fontSize: 13 }}>
+          Pague-me um café ☕ ou qualquer valor simbólico!
+        </span>
       </label>
 
       <button type="submit" style={{ gridColumn: 'span 2', marginTop: '8px' }}>

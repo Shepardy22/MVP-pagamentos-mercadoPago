@@ -1,3 +1,26 @@
+# Estilo para o select do método de pagamento
+.payment-selector select {
+  background: #222;
+  color: #fff;
+  border: 1px solid var(--primary-color, #007bff);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.payment-selector select:focus {
+  border: 2px solid var(--primary-color, #007bff);
+}
+
+.payment-selector option {
+  background: #222;
+  color: #fff;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;

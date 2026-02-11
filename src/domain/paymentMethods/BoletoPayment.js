@@ -14,15 +14,29 @@ export default class BoletoPayment extends PaymentMethod {
       payer: {
         email: this.dados.email,
         first_name: this.dados.nome,
-        last_name: '',
+        last_name: this.dados.sobrenome,
         identification: {
           type: 'CPF',
           number: this.dados.cpf,
         },
+        address: {
+          zip_code: this.dados.cep,
+          street_name: this.dados.rua,
+          street_number: this.dados.numero,
+          neighborhood: this.dados.bairro,
+          city: this.dados.cidade,
+          federal_unit: this.dados.uf,
+        },
       },
     };
-    const resposta = await api.post('v1/payments', dados);
-    return resposta.data;
+    try {
+      console.log('Payload enviado para /v1/payments:', dados);
+      const resposta = await api.post('v1/payments', dados);
+      return resposta.data;
+    } catch (error) {
+      console.error('Erro ao criar pagamento:', error?.response?.data || error.message);
+      throw error;
+    }
   }
 
   async consultarStatus(idPagamento) {

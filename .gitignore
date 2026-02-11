@@ -1,3 +1,5 @@
+# Arquivos de ambiente
+.env
 # Logs
 logs
 *.log
@@ -6,6 +8,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+#.env
+.env
+.env.*.local
 
 node_modules
 dist

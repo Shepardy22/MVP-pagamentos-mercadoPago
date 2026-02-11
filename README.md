@@ -8,14 +8,14 @@
 
 ## 🚀 Principais Funcionalidades
 
-- **Arquitetura Limpa (Recruiter-Ready)**: Lógica de negócio totalmente desacoplada da interface usando Hooks Customizados.
+- **Arquitetura Limpa**: Lógica de negócio totalmente desacoplada da interface usando Hooks Customizados.
 - **Máscara de CPF**: Formatação automática (000.000.000-00) durante a digitação para melhor UX.
 - **Valor Dinâmico**: Permite definir o valor da cobrança diretamente no checkout.
 - **Polling Automático**: Monitoramento de status em tempo real sem interação do usuário.
 - **Gerenciamento de Pendências**: Lista de vendas não pagas com opção de cancelamento direto.
 - **Zero CORS Issues**: Configurado com Vite Proxy para desenvolvimento fluido.
 
-## � Estrutura do Projeto
+## 🗂️ Estrutura do Projeto
 
 ```
 src/
