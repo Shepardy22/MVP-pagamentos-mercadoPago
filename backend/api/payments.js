@@ -1,31 +1,29 @@
-import express from 'express';
 import * as mpService from '../src/services/mercadoPagoService.js';
-import errorHandler from '../src/middlewares/errorHandler.js';
 
-const app = express();
-app.use(express.json());
-
-app.post('/', async (req, res, next) => {
-  try {
-    const pagamento = await mpService.criarPagamento(req.body);
-    res.status(201).json(pagamento);
-  } catch (err) { next(err); }
-});
-
-app.get('/:id', async (req, res, next) => {
-  try {
-    const pagamento = await mpService.consultarPagamento(req.params.id);
-    res.json(pagamento);
-  } catch (err) { next(err); }
-});
-
-app.put('/:id', async (req, res, next) => {
-  try {
-    const pagamento = await mpService.cancelarPagamento(req.params.id);
-    res.json(pagamento);
-  } catch (err) { next(err); }
-});
-
-app.use(errorHandler);
-
-export default app;
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    try {
+      const pagamento = await mpService.criarPagamento(req.body);
+      return res.status(201).json(pagamento);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+  if (req.method === 'GET') {
+    try {
+      const pagamento = await mpService.consultarPagamento(req.query.id || req.query.idPagamento || req.url.split('/').pop());
+      return res.status(200).json(pagamento);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+  if (req.method === 'PUT') {
+    try {
+      const pagamento = await mpService.cancelarPagamento(req.query.id || req.query.idPagamento || req.url.split('/').pop());
+      return res.status(200).json(pagamento);
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+  return res.status(405).json({ error: 'Method Not Allowed' });
+}
