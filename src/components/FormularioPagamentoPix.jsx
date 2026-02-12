@@ -31,7 +31,10 @@ function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar, metodoSelecionado 
     const dadosParaValidar = { ...dados, cpf: dados.cpf.replace(/\D/g, '') };
     const errosValidados = PagadorValidator.validate(dadosParaValidar);
     setErros(errosValidados);
-    const valor = parseFloat(dados.valor);
+    let valor = parseFloat(dados.valor);
+    if (!isNaN(valor)) {
+      valor = Number(valor.toFixed(2));
+    }
     if (!isNaN(valor) && valor < valorMinimo) {
       setErroValorMinimo(
         metodoSelecionado === 'Boleto Bancário'
@@ -42,7 +45,15 @@ function FormularioPagamentoPix({ dados, aoAlterar, aoEnviar, metodoSelecionado 
     } else {
       setErroValorMinimo('');
     }
-    if (!Object.values(errosValidados).some(Boolean)) aoEnviar(e);
+    if (!Object.values(errosValidados).some(Boolean)) {
+      // Garante que o valor enviado para o backend está correto para ambos métodos
+      if (dados.valor !== valor) {
+        aoAlterar({ target: { name: 'valor', value: valor } });
+        setTimeout(() => aoEnviar(e), 0);
+      } else {
+        aoEnviar(e);
+      }
+    }
   }
 
   return (
