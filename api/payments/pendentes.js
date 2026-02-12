@@ -17,7 +17,6 @@ export default async function handler(req, res) {
     const params = {
       status: 'pending,in_process,authorized',
       sort: 'date_created',
-      order: 'desc',
       limit: 20
     };
     const resposta = await apiMP.get('/v1/payments/search', { params });
