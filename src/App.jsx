@@ -146,7 +146,10 @@ function App() {
         {!respostaPagamento && (
           <ListaPagamentos
             pagamentos={pagamentosPendentes}
-            aoCancelar={cancelarPagamento}
+            aoCancelar={async (id) => {
+              const ok = await cancelarPagamento(id);
+              if (ok) carregarPendencias();
+            }}
           />
         )}
       </header>
